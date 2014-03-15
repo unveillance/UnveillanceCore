@@ -10,8 +10,14 @@ EMIT_SENTINELS = [
 		EmitSentinel("emit_sentinels", "EmitSentinel", None)]
 
 class UnveillanceObject(object):
-	def __init__(self):
+	def __init__(self, emit_sentinels=None):
 		self.emit_sentinels = deepcopy(EMIT_SENTINELS)
+		
+		if emit_sentinels is not None:
+			if type(emit_sentinels) is not list:
+				emit_sentinels = [emit_sentinels]
+			
+			self.emit_sentinels.extend(emit_sentinels)
 	
 	def emit(self, remove=None):
 		emit_ = deepcopy(self.__dict__)
