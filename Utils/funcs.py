@@ -55,3 +55,30 @@ def stopDaemon(pid_file):
 			print "could not kill process at PID %d" % pid
 
 	return False
+
+def generateNonce(bottom_range=21, top_range=46):
+	import string, random, time
+	orderings = [
+			string.ascii_uppercase, 
+			string.digits, 
+			string.ascii_lowercase, 
+			string.digits, 
+			string.ascii_uppercase,
+			'*@~._!$%',
+			str(time.time())
+	]
+	
+	random.shuffle(orderings)
+	choices = ''.join(orderings)
+	numChars = random.choice(range(bottom_range,top_range))
+	
+	return ''.join(random.choice(choices) for x in range(numChars))
+
+def generateMD5Hash(content=None, salt=None):
+	if content is None:
+		content = generateNonce()
+	
+	m = md5()
+	m.update(content)
+	if salt is not None: m.update(salt)
+	return m.hexdigest()
