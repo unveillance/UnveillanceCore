@@ -2,10 +2,7 @@ import json
 
 from conf import HOST
 
-class UnveillanceElasticsearch(object):
-	def __init__(self):
-		self.status = False
-	
+class UnveillanceElasticsearch():
 	def get(self, _id):
 		print "getting thing"
 		if not self.status: return None
@@ -34,17 +31,6 @@ class UnveillanceElasticsearch(object):
 	def create(self, _id, args):
 		print "creating thing"
 		return self.update(_id, args)
-	
-	def delete(self, _id):
-		print "deleting thing"
-		if not self.status: return False
-		
-		res = self.sendELSRequest(endpoint=_id, method="delete")
-		
-		try: return res['ok']
-		except KeyError as e: pass
-		
-		return False
 	
 	def sendELSRequest(self, data=None, endpoint=None):
 		url = "http://%s:9200/unveillance/documents/" % HOST
