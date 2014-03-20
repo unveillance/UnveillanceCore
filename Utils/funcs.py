@@ -1,4 +1,5 @@
 import os, sys, signal
+from hashlib import md5
 
 def startDaemon(log_file, pid_file):
 	print "DAEMONIZING PROCESS>>>"
@@ -79,6 +80,6 @@ def generateMD5Hash(content=None, salt=None):
 		content = generateNonce()
 	
 	m = md5()
-	m.update(content)
-	if salt is not None: m.update(salt)
+	m.update(str(content))
+	if salt is not None: m.update(str(salt))
 	return m.hexdigest()
