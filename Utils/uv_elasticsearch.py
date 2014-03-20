@@ -3,6 +3,9 @@ import json
 from conf import HOST
 
 class UnveillanceElasticsearch():
+	def __init__(self):
+		print "Initing Elasticsearch handler..."
+		
 	def get(self, _id):
 		print "getting thing"
 		if not self.status: return None
