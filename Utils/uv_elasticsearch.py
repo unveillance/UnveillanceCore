@@ -2,7 +2,7 @@ import json
 
 from conf import HOST
 
-class UnveillanceElasticsearch():
+class UnveillanceElasticsearch(object):
 	def __init__(self):
 		print "Initing Elasticsearch handler..."
 		
@@ -35,7 +35,7 @@ class UnveillanceElasticsearch():
 		print "creating thing"
 		return self.update(_id, args)
 	
-	def sendELSRequest(self, data=None, endpoint=None):
+	def sendELSRequest(self, data=None, endpoint=None, method="get"):
 		url = "http://%s:9200/unveillance/documents/" % HOST
 		if endpoint is not None:
 			url += endpoint
@@ -47,7 +47,5 @@ class UnveillanceElasticsearch():
 			r = requests.get(url, data=data)
 		elif method == "put":
 			r = requests.post(url, data=data)
-		elif method == "delete":
-			r = requests.delete(url, data=data)
 		
 		return json.loads(r.content)
