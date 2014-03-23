@@ -1,4 +1,5 @@
 import os, sys, signal
+from subprocess import Popen, PIPE
 from hashlib import md5
 
 def startDaemon(log_file, pid_file):
@@ -36,7 +37,7 @@ def startDaemon(log_file, pid_file):
 
 	print ">>> PROCESS DAEMONIZED"
 
-def stopDaemon(pid_file):
+def stopDaemon(pid_file, extra_pids_port=None):
 	pid = False
 	try:
 		f = open(pid_file, 'r')
@@ -51,6 +52,16 @@ def stopDaemon(pid_file):
 		print "STOPPING DAEMON on pid %d" % pid
 		try:
 			os.kill(pid, signal.SIGTERM)
+			
+			if extra_pids_port is not None:
+				pids = Popen(['lsof', '-t', '-i:%d' % extra_pids_port], stdout=PIPE)
+				pid = pids.stdout.read().strip()
+				pids.stdout.close()
+				
+				for p in pid.split("\n"):
+					cmd = ['kill', str(p)]
+					Popen(cmd)
+			
 			return True
 		except OSError as e:
 			print "could not kill process at PID %d" % pid
