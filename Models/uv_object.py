@@ -10,7 +10,7 @@ EMIT_SENTINELS = [
 		EmitSentinel("emit_sentinels", "EmitSentinel", None)]
 
 class UnveillanceObject(object):
-	def __init__(self, emit_sentinels=None):
+	def __init__(self, emit_sentinels=None, _id=None, inflate=None):
 		self.emit_sentinels = deepcopy(EMIT_SENTINELS)
 		
 		if emit_sentinels is not None:
@@ -18,6 +18,17 @@ class UnveillanceObject(object):
 				emit_sentinels = [emit_sentinels]
 			
 			self.emit_sentinels.extend(emit_sentinels)
+		
+		if inflate is not None: 
+			try:
+				self._id = inflate['_id']
+			except KeyError as e:
+				print e
+				return
+				
+			self.inflate(inflate)
+		else if _id is not None:
+			print "have to look up thing somehow..."
 	
 	def emit(self, remove=None):
 		emit_ = deepcopy(self.__dict__)
