@@ -2,6 +2,17 @@ import os, sys, signal
 from subprocess import Popen, PIPE
 from hashlib import md5
 
+def hashEntireFile(path_to_file):
+	try:
+		m = md5()
+		with open(path_to_file, 'rb') as f:
+			for chunk in iter(lambda: f.read(4096), b''):
+				m.update(chunk)
+		return m.hexdigest()
+	
+	except: pass
+	return None
+
 def startDaemon(log_file, pid_file):
 	print "DAEMONIZING PROCESS>>>"
 	try:
