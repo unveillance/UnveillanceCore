@@ -1,6 +1,32 @@
-import os, sys, signal
+import os, sys, signal, json
 from subprocess import Popen, PIPE
 from hashlib import md5
+
+def passesParameterFilter(param_string):
+	# TODO
+	return True
+
+def parseQueryString(query_string):
+	# if query string is already json, return that
+	try:
+		if passesParameterFilter(query_string):
+			return json.loads(query_string)
+		else: return None
+	except ValueError as e: pass
+	
+	# otherwise...
+	params = dict()
+	for kvp in [w for w in query_string.split("&") if w != ""]:
+		kvp = kvp.split("=")
+		k = kvp[0]
+		v = kvp[1]
+		
+		if not passesParameterFilter(k) or not passesParameterFilter(v):
+			return None
+		
+		params[k] = asTrueValue(v)
+	
+	return params
 
 def hashEntireFile(path_to_file):
 	try:
