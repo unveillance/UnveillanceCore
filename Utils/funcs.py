@@ -2,21 +2,19 @@ import os, sys, signal, json
 from subprocess import Popen, PIPE
 from hashlib import md5
 
-def passesParameterFilter(param_string):
-	# TODO
-	return True
+from lib.Core.funcs import passesParameterFilter
 
-def parseQueryString(query_string):
+def parseRequestEntity(entity):
 	# if query string is already json, return that
 	try:
-		if passesParameterFilter(query_string):
-			return json.loads(query_string)
+		if passesParameterFilter(entity):
+			return json.loads(entity)
 		else: return None
 	except ValueError as e: pass
 	
 	# otherwise...
 	params = dict()
-	for kvp in [w for w in query_string.split("&") if w != ""]:
+	for kvp in [w for w in entity.split("&") if w != ""]:
 		kvp = kvp.split("=")
 		k = kvp[0]
 		v = kvp[1]
