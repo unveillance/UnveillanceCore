@@ -1,8 +1,89 @@
-import os, sys, signal, json
+import os, sys, signal, json, re
 from subprocess import Popen, PIPE
 from hashlib import md5
 
-from lib.Core.funcs import passesParameterFilter
+def asTrueValue(str_value):
+	try:
+		if str_value.startswith("[") and str_value.endswith("]"):
+			vals = []
+			for v_ in str(str_value[1:-1]).split(","):
+				vals.append(AsTrueValue(v_))
+
+			return vals
+		if str_value.startswith("{") and str_value.endswith("}"):
+			return json.loads(str_value)
+		if str_value == "0":
+			return int(0)
+		if str_value == "true":
+			return True
+		if str_value == "false":
+			return False
+		if type(str_value) is unicode:
+			return unicode.join(u'\n', map(unicode, str_value))
+	except AttributeError:
+		pass
+	
+	try:
+		if int(str_value):
+			return int(str_value)
+	except ValueError:
+		pass
+		
+	try:
+		if float(str_value):
+			return float(str_value)	
+	except ValueError:
+		pass
+		
+	return str_value
+
+def getTrueValue(str_value):
+	str_value = str(str_value)
+	if str_value.startswith("[") and str_value.endswith("]"):
+		return 'list'
+	if str_value == "0":
+		return 'int'
+	if str_value == "true" or str_value == "false":
+		return 'bool'
+	try:
+		if int(str_value):
+			return 'int'
+	except ValueError as e:
+		#print "GET TRUE VALUE ERROR: %s so i returned i try float " % e
+		pass
+		
+	try:
+		if float(str_value):
+			return 'float'
+	except ValueError as e:
+		#print "GET TRUE VALUE ERROR: %s so i returned i return str " % e
+		pass
+		
+	return 'str'
+	
+def unUnicode(data):
+	return asTrueValue(unicode.join(u'\n', map(unicode, data)))
+
+def passesParameterFilter(param_str):
+	# looking for pipes
+	match = re.search(r'\s*\|\s*.+', param_str)
+	if match:
+		print "found a pipe:\n%s" % match.group()
+		return False
+
+	# looking for two periods and slashes "\..\"
+	match = re.search(r'\.\./', param_str)
+	if match:
+		print "found a file inclusion attempt:\n%s" % match.group()
+		return False
+
+	# looking for XSS using broken element tags (i.e. <svg/onload=alert(1)>
+	match = re.search(r'<\s*\w+/\s*.+=.*\s*>', param_str)
+	if match:
+		print "found an XSS attempt using broken element tag:\n%s" % match.group()	
+		return False
+
+	return True
 
 def parseRequestEntity(entity):
 	# if query string is already json, return that
