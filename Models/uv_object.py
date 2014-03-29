@@ -27,7 +27,7 @@ class UnveillanceObject(object):
 				return
 				
 			self.inflate(inflate)
-		else if _id is not None:
+		elif _id is not None:
 			print "have to look up thing somehow..."
 	
 	def emit(self, remove=None):
