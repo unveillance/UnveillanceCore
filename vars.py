@@ -1,4 +1,3 @@
 from collections import namedtuple
 
-AnnexStatusDescriptor = namedtuple("AnnexStatusDescriptor", 
-	"uuid status ports last_checked")
+AnnexDescriptor = namedtuple("AnnexDescriptor", "farm p22 p8888")
