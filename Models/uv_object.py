@@ -34,8 +34,7 @@ class UnveillanceObject(object):
 			self.emit_sentinels.extend(emit_sentinels)
 			self.inflate(inflate)
 		
-		elif _id is not None:
-			print "have to look up thing somehow..."
+		elif _id is not None: self.getObject(_id)
 	
 	def addAsset(self, data, file_name, asset_path, as_literal=True, **metadata):
 		if data is not None:
@@ -85,3 +84,6 @@ class UnveillanceObject(object):
 		print attrs
 		for k,v in attrs.iteritems():
 			setattr(self, k, v)
+	
+	def getObject(self, _id): pass
+	def save(self): pass
