@@ -4,6 +4,7 @@ import os, json
 from collections import namedtuple
 from copy import deepcopy
 
+from conf import ANNEX_DIR
 EmitSentinel = namedtuple("EmitSentinel", "attr type s_replace")
 
 EMIT_SENTINELS = [
@@ -17,17 +18,48 @@ class UnveillanceObject(object):
 			if type(emit_sentinels) is not list:
 				emit_sentinels = [emit_sentinels]
 			
-			self.emit_sentinels.extend(emit_sentinels)
-		
 		if inflate is not None: 
 			try: self._id = inflate['_id']
 			except KeyError as e:
 				print e
 				return
-				
+			
+			base_path = os.path.join(".data", inflate['_id'])
+			if not os.path.exists(os.path.join(ANNEX_DIR, base_path)):
+				os.makedirs(os.path.join(ANNEX_DIR, base_path))
+			
+			inflate['base_path'] = base_path
+			inflate['manifest'] = os.path.join(base_path, "manifest.json")
+			
+			self.emit_sentinels.extend(emit_sentinels)
 			self.inflate(inflate)
+		
 		elif _id is not None:
 			print "have to look up thing somehow..."
+	
+	def addAsset(self, data, file_name, asset_path, as_literal=True, **metadata):
+		if data is not None:
+			if not as_literal: data = dumps(data)
+			
+			try:
+				with open(asset_path, 'wb+') as file: file.write(data)
+			except Exception as e:
+				print e
+				return False
+		
+		asset = { 'file_name' : file_name }
+		for k,v in metadata.iteritems():
+			asset[k] = v
+			if DEBUG: print "metadata added: %s = %s" % (k, v)
+			
+		if not hasattr(self, "assets"): self.assets = []
+		
+		entry = [e for e in self.assets if e['file_name'] == asset['file_name']]
+		if len(entry) == 1: entry[0].update(asset)
+		else: self.assets.append(asset)
+		
+		self.save()
+		return asset_path
 	
 	def emit(self, remove=None):
 		emit_ = deepcopy(self.__dict__)
