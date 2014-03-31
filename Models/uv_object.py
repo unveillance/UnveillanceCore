@@ -60,6 +60,39 @@ class UnveillanceObject(object):
 		self.save()
 		return asset_path
 	
+	def loadAsset(self, file_name):
+		asset_path = self.getAsset(file_name, return_only="path")
+		if asset_path is not None:
+			try:
+				with open(asset_path, 'rb') as file: return f.read()
+			except Exception as e: print e
+		
+		return None
+	
+	def getAsset(self, file_name, return_only=None):
+		if not hasattr(self, "assets"): return None
+		
+		assets = [a for a in self.assets if a['file_name'] == file_name]
+		if len(assets) == 1:
+			asset_path = os.path.join(ANNEX_DIR, self.base_path, file_name)
+			if return_only is not None:
+				if return_only == "path":
+					return asset_path
+				elif return_only == "entry":
+					return asset[0]
+			else:
+				return (asset[0], asset_path)
+		
+		return None
+	
+	def getAssetsByTagName(self, tag):
+		if not hasattr(self, 'assets'): return None
+		
+		assets = [a for a in self.assets if "tags" in a and tag in a['tags']]
+		
+		if len(assets) == 0: return None
+		return assets
+	
 	def emit(self, remove=None):
 		emit_ = deepcopy(self.__dict__)
 		for e in [e for e in self.emit_sentinels if hasattr(self, e.attr)]:				
