@@ -20,8 +20,7 @@ class UnveillanceObject(object):
 			self.emit_sentinels.extend(emit_sentinels)
 		
 		if inflate is not None: 
-			try:
-				self._id = inflate['_id']
+			try: self._id = inflate['_id']
 			except KeyError as e:
 				print e
 				return
