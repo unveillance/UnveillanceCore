@@ -33,6 +33,7 @@ class UnveillanceObject(object):
 			
 			self.emit_sentinels.extend(emit_sentinels)
 			self.inflate(inflate)
+			self.save()
 		
 		elif _id is not None: self.getObject(_id)
 	
