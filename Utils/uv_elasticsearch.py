@@ -1,4 +1,4 @@
-import json
+import json, requests
 
 from conf import HOST, ELS_PORT
 
@@ -8,7 +8,6 @@ class UnveillanceElasticsearch(object):
 		
 	def get(self, _id):
 		print "getting thing"
-		if not self.status: return None
 		
 		res = self.sendELSRequest(endpoint=_id)
 		try:
@@ -20,21 +19,6 @@ class UnveillanceElasticsearch(object):
 	def query(self, args):
 		print "OH A QUERY"
 	
-	def update(self, _id, args):
-		print "updating thing"
-		if not self.status: return False
-		
-		res = self.sendELSRequest(endpoint=_id, data=args, method="put")
-
-		try: return res['ok']
-		except KeyError as e: pass
-		
-		return False
-	
-	def create(self, _id, args):
-		print "creating thing"
-		return self.update(_id, args)
-	
 	def sendELSRequest(self, data=None, endpoint=None, method="get"):
 		url = "http://%s:%d/unveillance/documents/" % (HOST, ELS_PORT)
 		if endpoint is not None:
@@ -43,9 +27,10 @@ class UnveillanceElasticsearch(object):
 		if data is not None:
 			data = json.dumps(data)
 		
-		if method == "get":
-			r = requests.get(url, data=data)
-		elif method == "put":
-			r = requests.post(url, data=data)
 		
-		return json.loads(r.content)
+		try:
+			r = requests.get(url, data=data)
+			return json.loads(r.content)
+
+		except Exception as e: print e		
+		return None
