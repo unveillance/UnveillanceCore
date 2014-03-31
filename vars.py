@@ -1,3 +1,4 @@
 from collections import namedtuple
 
-AnnexDescriptor = namedtuple("AnnexDescriptor", "farm p22 p8888")
+EmitSentinel = namedtuple("EmitSentinel", "attr type s_replace")
+#AnnexDescriptor = namedtuple("AnnexDescriptor", "farm p22 p8888")

@@ -5,7 +5,7 @@ from collections import namedtuple
 from copy import deepcopy
 
 from conf import ANNEX_DIR
-EmitSentinel = namedtuple("EmitSentinel", "attr type s_replace")
+from vars import EmitSentinel
 
 EMIT_SENTINELS = [
 		EmitSentinel("emit_sentinels", "EmitSentinel", None)]

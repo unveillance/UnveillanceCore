@@ -1,12 +1,8 @@
 from crontab import CrontTab
-from uv_object import UnveillanceObject
 
 class UnveillanceSyncTask(object):
 	def __init__(self):
-		print "sync task init"
-	
-		if inflate is not None:
-			inflate['is_running'] = False
+		print "sync task init"		
 		
 	def setupCronJob(self):
 		# TODO: THIS IS NOT PLATFORM-AGNOSTIC
@@ -26,8 +22,6 @@ class UnveillanceSyncTask(object):
 			if self.cron_job.is_enabled(): return False
 			
 			self.cron_job.enable()			
-			self.save()
-			
 			return self.cron_job.is_enabled()
 		
 		return False
@@ -37,9 +31,7 @@ class UnveillanceSyncTask(object):
 			if not self.cron_job.is_valid(): return False
 			if not self.cron_job.is_enabled(): return False
 			
-			self.cron_job.enable(False)
-			self.save()
-			
+			self.cron_job.enable(False)			
 			return not self.cron_job.is_enabled()
 			
 		return False
@@ -52,8 +44,3 @@ class UnveillanceSyncTask(object):
 			if init: return setupCronJob()
 			
 		return None
-		
-	def save(self):
-		#	MAYBE is_enabled doesn't mean what i think it does?
-		if hasattr(self, 'cron_job') and self.cron_job is not None:
-			self.is_running = self.cron_job.is_enabled()
