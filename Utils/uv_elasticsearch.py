@@ -1,6 +1,6 @@
 import json
 
-from conf import HOST
+from conf import HOST, ELS_PORT
 
 class UnveillanceElasticsearch(object):
 	def __init__(self):
@@ -36,7 +36,7 @@ class UnveillanceElasticsearch(object):
 		return self.update(_id, args)
 	
 	def sendELSRequest(self, data=None, endpoint=None, method="get"):
-		url = "http://%s:9200/unveillance/documents/" % HOST
+		url = "http://%s:%d/unveillance/documents/" % (HOST, ELS_PORT)
 		if endpoint is not None:
 			url += endpoint
 		
