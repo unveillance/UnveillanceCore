@@ -114,6 +114,12 @@ class UnveillanceObject(object):
 
 		return emit_
 	
+	def invalidate(self, error=None):
+		self.invalid = True
+		if error_message is not None:
+			if not hasattr(self, "errors"): self.errors = []
+			self.errors.append(error)
+	
 	def inflate(self, attrs):
 		print attrs
 		for k,v in attrs.iteritems():
