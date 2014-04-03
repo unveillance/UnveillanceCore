@@ -6,7 +6,7 @@ class UnveillanceSyncTask(object):
 		
 	def setupCronJob(self):
 		# TODO: THIS IS NOT PLATFORM-AGNOSTIC
-		cron = CronTab(user=True)
+		self.cron = CronTab(user=True)
 		cron_job = cron.new(command=self.command, comment=self._id)
 		
 		if self.frequency == "m": cron_job.minute.every(self.duration)
@@ -38,9 +38,9 @@ class UnveillanceSyncTask(object):
 	
 	def locateCronJob(self, init=False):
 		try:
-			return cron.find_comment(self._id)][0]
+			return self.cron.find_comment(self._id)][0]
 		except Exception as e: 
 			print e
-			if init: return setupCronJob()
+			if init: return self.setupCronJob()
 			
 		return None
