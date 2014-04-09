@@ -5,7 +5,7 @@ from collections import namedtuple
 from copy import deepcopy
 from time import time
 
-from conf import ANNEX_DIR
+from conf import ANNEX_DIR, DEBUG
 from lib.Core.vars import EmitSentinel
 
 EMIT_SENTINELS = [
