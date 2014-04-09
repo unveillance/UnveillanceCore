@@ -116,7 +116,7 @@ class UnveillanceObject(object):
 	
 	def invalidate(self, error=None):
 		self.invalid = True
-		if error_message is not None:
+		if error is not None:
 			if not hasattr(self, "errors"): self.errors = []
 			self.errors.append(error)
 	
