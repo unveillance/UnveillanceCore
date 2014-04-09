@@ -1,6 +1,10 @@
-import os, sys, signal, json, re
+import os, sys, signal, json, re, string, random
+from time import time
 from subprocess import Popen, PIPE
 from hashlib import md5
+
+from Crypto.Cipher import AES
+from Crypto import Random
 
 def asTrueValue(str_value):
 	try:
@@ -185,7 +189,7 @@ def stopDaemon(pid_file, extra_pids_port=None):
 	return False
 
 def generateNonce(bottom_range=21, top_range=46):
-	import string, random, time
+	
 	orderings = [
 			string.ascii_uppercase, 
 			string.digits, 
@@ -193,15 +197,27 @@ def generateNonce(bottom_range=21, top_range=46):
 			string.digits, 
 			string.ascii_uppercase,
 			'*@~._!$%',
-			str(time.time())
+			str(time())
 	]
 	
 	random.shuffle(orderings)
 	choices = ''.join(orderings)
-	numChars = random.choice(range(bottom_range,top_range))
+	numChars = random.choice(range(bottom_range, top_range))
 	
 	return ''.join(random.choice(choices) for x in range(numChars))
 
+def generateSecureNonce(bottom_range=40, top_range=80):
+	orderings = []
+	for x in xrange(5):
+		orderings.append(generateSecureRandom())
+	
+	choices = ''.join(orderings)
+	numChars = random.choice(range(bottom_range, top_range))
+	return "".join(random.choice(choices) for x in range(numChars))
+
+def generateSecureRandom():
+	return Random.new().read(AES.block_size).encode('hex')
+	
 def generateMD5Hash(content=None, salt=None):
 	if content is None:
 		content = generateNonce()
