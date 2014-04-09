@@ -9,6 +9,9 @@ MimeTypes = mime_types("plain/txt", ["plain/txt"])
 asset_tags = namedtuple("asset_tags", "ORIG F_MD")
 AssetTags = asset_tags("original_document", "metadata_fingerprint")
 
+uv_doc_type = namedtuple("uv_doc_type", "TASK TEXT UVSCRIPT")
+UVDocType = uv_doc_type("UV_TASK", "UV_TEXT", "UV_SCRIPT")
+
 class Result(object):
 	def __init__(self):
 		self.result = 404
