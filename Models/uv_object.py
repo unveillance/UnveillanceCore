@@ -3,6 +3,7 @@ __metaclass__ = type
 import os, json
 from collections import namedtuple
 from copy import deepcopy
+from time import time
 
 from conf import ANNEX_DIR
 from lib.Core.vars import EmitSentinel
@@ -30,6 +31,7 @@ class UnveillanceObject(object):
 			
 			inflate['base_path'] = base_path
 			inflate['manifest'] = os.path.join(base_path, "manifest.json")
+			inflate['date_added'] = time() * 1000
 			
 			self.emit_sentinels.extend(emit_sentinels)
 			self.inflate(inflate)
