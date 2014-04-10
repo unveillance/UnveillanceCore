@@ -125,5 +125,9 @@ class UnveillanceObject(object):
 		for k,v in attrs.iteritems():
 			setattr(self, k, v)
 	
-	def getObject(self, _id): pass
-	def save(self): pass
+	def getObject(self, _id):
+		if self.existsInAnnex(os.path.join(ANNEX_DIR, ".data", _id, "manifest.json")):
+			return True
+		
+		self.invalidate(error="Object does not exist in Annex")
+		return False
