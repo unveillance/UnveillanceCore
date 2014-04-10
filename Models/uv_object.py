@@ -3,9 +3,10 @@ __metaclass__ = type
 import os, json
 from collections import namedtuple
 from copy import deepcopy
+from time import time
 
-from conf import ANNEX_DIR
-from vars import EmitSentinel
+from conf import ANNEX_DIR, DEBUG
+from lib.Core.vars import EmitSentinel
 
 EMIT_SENTINELS = [
 		EmitSentinel("emit_sentinels", "EmitSentinel", None)]
@@ -30,6 +31,7 @@ class UnveillanceObject(object):
 			
 			inflate['base_path'] = base_path
 			inflate['manifest'] = os.path.join(base_path, "manifest.json")
+			inflate['date_added'] = time() * 1000
 			
 			self.emit_sentinels.extend(emit_sentinels)
 			self.inflate(inflate)
@@ -116,7 +118,7 @@ class UnveillanceObject(object):
 	
 	def invalidate(self, error=None):
 		self.invalid = True
-		if error_message is not None:
+		if error is not None:
 			if not hasattr(self, "errors"): self.errors = []
 			self.errors.append(error)
 	
