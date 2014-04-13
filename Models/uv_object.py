@@ -34,7 +34,6 @@ class UnveillanceObject(object):
 				os.makedirs(os.path.join(ANNEX_DIR, base_path))
 			
 			inflate['base_path'] = base_path
-			inflate['manifest'] = os.path.join(base_path, "manifest.json")
 			inflate['date_added'] = time() * 1000
 			
 			self.emit_sentinels.extend(emit_sentinels)
@@ -43,16 +42,7 @@ class UnveillanceObject(object):
 		
 		elif _id is not None: self.getObject(_id)
 	
-	def addAsset(self, data, file_name, asset_path, as_literal=True, **metadata):
-		if data is not None:
-			if not as_literal: data = dumps(data)
-			
-			try:
-				with open(asset_path, 'wb+') as file: file.write(data)
-			except Exception as e:
-				print e
-				return False
-		
+	def addAsset(self, file_name, asset_path, as_literal=True, **metadata):		
 		asset = { 'file_name' : file_name }
 		for k,v in metadata.iteritems():
 			asset[k] = v
@@ -69,9 +59,11 @@ class UnveillanceObject(object):
 	
 	def loadAsset(self, file_name):
 		asset_path = self.getAsset(file_name, return_only="path")
+		print "LOADING ASSET FROM PATH: %s" % asset_path
+		
 		if asset_path is not None:
 			try:
-				with open(asset_path, 'rb') as file: return f.read()
+				with open(asset_path, 'rb') as f: return f.read()
 			except Exception as e: print e
 		
 		return None
@@ -130,10 +122,3 @@ class UnveillanceObject(object):
 		print attrs
 		for k,v in attrs.iteritems():
 			setattr(self, k, v)
-	
-	def getObject(self, _id):
-		if self.existsInAnnex(os.path.join(ANNEX_DIR, ".data", _id, "manifest.json")):
-			return True
-		
-		self.invalidate(error="Object does not exist in Annex")
-		return False

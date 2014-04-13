@@ -6,6 +6,28 @@ from hashlib import md5
 from Crypto.Cipher import AES
 from Crypto import Random
 
+from vars import UNCAUGHT_UNICODES, UNCAUGHT_PUNCTUATION, STOPWORDS, SPLITTERS
+
+def cleanLine(line):
+	line = line.strip()
+	for u in UNCAUGHT_UNICODES:
+		line = re.sub(u.regex, " " if u.sub is None else u.sub, line)
+	return line
+
+def cleanAndSplitLine(line):
+	for c in UNCAUGHT_PUNCTUATION:
+		line = re.sub(c.regex, " " if c.sub is None else c.sub, line)
+	
+	line = line.lower()
+	words = list(set(re.split(SPLITTERS, line)))
+	
+	# remove stopwords, numbers, nochars
+	words = [word for word in words if word != ""]
+	words = [word for word in words if re.match(r'\b([a-zA-Z]+)\b', word) is not None]
+	words = [word for word in words if word not in STOPWORDS]
+	
+	return words
+
 def asTrueValue(str_value):
 	try:
 		if str_value.startswith("[") and str_value.endswith("]"):
