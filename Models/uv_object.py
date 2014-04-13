@@ -25,6 +25,10 @@ class UnveillanceObject(object):
 				print e
 				return
 			
+			if self._id is None: 
+				if DEBUG: print "why is Id none???"
+				return
+			
 			base_path = os.path.join(".data", inflate['_id'])
 			if not os.path.exists(os.path.join(ANNEX_DIR, base_path)):
 				os.makedirs(os.path.join(ANNEX_DIR, base_path))
