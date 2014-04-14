@@ -1,4 +1,4 @@
-import os, sys, signal, json, re, string, random
+import os, sys, signal, json, re, string, random, base64
 from time import time
 from subprocess import Popen, PIPE
 from hashlib import md5
@@ -7,6 +7,22 @@ from Crypto.Cipher import AES
 from Crypto import Random
 
 from vars import UNCAUGHT_UNICODES, UNCAUGHT_PUNCTUATION, STOPWORDS, SPLITTERS
+from conf import DEBUG
+
+def b64decode(content):
+	try:
+		return base64.b64decode(content)
+	except TypeError as e:
+		if DEBUG: 
+			print e
+			print "...so trying to decode again (brute-force padding)"
+			
+		try:
+			return base64.b64decode(content + ("=" * ((4 - len(content) % 4) % 4)))
+		except TypeError as e:
+			if DEBUG: print "could not unB64 this content: %s"  % e
+	
+	return None
 
 def cleanLine(line):
 	line = line.strip()

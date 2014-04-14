@@ -28,6 +28,8 @@ MIME_TYPE_MAP = {
 	'application/json' : "json"
 }
 
+METADATA_ASPECTS = {}
+
 UNCAUGHT_UNICODES = [SubDescriptor(u'\u2014', "--"),
 	SubDescriptor(u'\u0152', "oe"),
 	SubDescriptor(u'\u2122', "'")]
