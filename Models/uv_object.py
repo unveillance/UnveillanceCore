@@ -19,6 +19,8 @@ class UnveillanceObject(object):
 			if type(emit_sentinels) is not list:
 				emit_sentinels = [emit_sentinels]
 			
+			self.emit_sentinels.extend(emit_sentinels)
+			
 		if inflate is not None: 
 			try: self._id = inflate['_id']
 			except KeyError as e:
@@ -36,7 +38,6 @@ class UnveillanceObject(object):
 			inflate['base_path'] = base_path
 			inflate['date_added'] = time() * 1000
 			
-			self.emit_sentinels.extend(emit_sentinels)
 			self.inflate(inflate)
 			self.save()
 		
