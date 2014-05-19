@@ -21,9 +21,7 @@ class UnveillanceSyncTask(UnveillanceObject):
 			try:
 				inflate['task_path'] = ".".join([TASKS_ROOT, inflate['task_path']])
 			except KeyError as e:
-				if DEBUG: 
-					print e
-				
+				if DEBUG: print e
 				self.invalid = True
 				return
 		
