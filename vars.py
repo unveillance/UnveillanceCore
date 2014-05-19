@@ -5,6 +5,7 @@ EmitSentinel = namedtuple("EmitSentinel", "attr type s_replace")
 AnnexDescriptor = namedtuple("AnnexDescriptor", "farm p22 p8888")
 SubDescriptor = namedtuple('SubDescriptor', 'regex sub')
 
+ALLOWED_DATA_ROOTS = [".data", ".synctasks/local"]
 UV_DOC_TYPE = {
 	'TASK' : "UV_TASK",
 	'DOC' : "UV_DOCUMENT",

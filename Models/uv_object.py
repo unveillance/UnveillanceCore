@@ -6,7 +6,7 @@ from copy import deepcopy
 from time import time
 
 from conf import ANNEX_DIR, DEBUG
-from lib.Core.vars import EmitSentinel
+from vars import EmitSentinel, ALLOWED_DATA_ROOTS
 
 EMIT_SENTINELS = [
 		EmitSentinel("emit_sentinels", "EmitSentinel", None)]
@@ -31,7 +31,17 @@ class UnveillanceObject(object):
 				if DEBUG: print "why is Id none???"
 				return
 			
-			base_path = os.path.join(".data", inflate['_id'])
+			#.data
+			relative_root = ALLOWED_DATA_ROOTS[0]
+			if "relative_root" in inflate.keys():
+				relative_root = inflate['relative_root']
+				del inflate['relative_root']
+				
+			if relative_root not in ALLOWED_DATA_ROOTS:
+				if DEBUG: print "OH HELLLLL NO!"
+				return
+			
+			base_path = os.path.join(relative_root, inflate['_id'])
 			if not os.path.exists(os.path.join(ANNEX_DIR, base_path)):
 				os.makedirs(os.path.join(ANNEX_DIR, base_path))
 			
@@ -42,6 +52,7 @@ class UnveillanceObject(object):
 			self.save()
 		
 		elif _id is not None: self.getObject(_id)
+		print "HIIIIIIII %s" % _id
 	
 	def addAsset(self, file_name, asset_path, as_literal=True, **metadata):		
 		asset = { 'file_name' : file_name }
