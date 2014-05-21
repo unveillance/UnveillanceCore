@@ -6,11 +6,13 @@ from crontab import CronTab
 from uv_object import UnveillanceObject
 from lib.Frontend.lib.Core.Utils.funcs import generateMD5Hash
 
-from conf import DEBUG, API_PORT, ANNEX_DIR
+from conf import DEBUG, API_PORT
 from vars import TASKS_ROOT, EmitSentinel
 
 class UnveillanceSyncTask(UnveillanceObject):
 	def __init__(self, inflate=None, _id=None):
+		from conf import ANNEX_DIR
+		
 		if DEBUG: print "sync task init"
 		
 		if inflate is not None:
