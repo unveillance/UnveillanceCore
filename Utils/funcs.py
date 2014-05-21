@@ -253,8 +253,15 @@ def generateSecureNonce(bottom_range=40, top_range=80):
 	numChars = random.choice(range(bottom_range, top_range))
 	return "".join(random.choice(choices) for x in range(numChars))
 
-def generateSecureRandom():
-	return Random.new().read(AES.block_size).encode('hex')
+def generateSecureRandom(try_again=True):
+	try:
+		return Random.new().read(AES.block_size).encode('hex')
+	except AssertionError as e:
+		if try_again:
+			Random.atfork()
+			return generateSecureRandom(try_again=False)
+	
+	return None
 	
 def generateMD5Hash(content=None, salt=None):
 	if content is None:
