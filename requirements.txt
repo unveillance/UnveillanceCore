@@ -1,0 +1,4 @@
+fabric
+requests
+tornado
+pyyaml
