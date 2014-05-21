@@ -49,7 +49,7 @@ def asTrueValue(str_value):
 		if str_value.startswith("[") and str_value.endswith("]"):
 			vals = []
 			for v_ in str(str_value[1:-1]).split(","):
-				vals.append(AsTrueValue(v_))
+				vals.append(asTrueValue(v_))
 
 			return vals
 		if str_value.startswith("{") and str_value.endswith("}"):
