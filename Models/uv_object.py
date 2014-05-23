@@ -14,6 +14,7 @@ EMIT_SENTINELS = [
 class UnveillanceObject(object):
 	def __init__(self, emit_sentinels=None, _id=None, inflate=None):
 		from conf import ANNEX_DIR
+		
 		self.emit_sentinels = deepcopy(EMIT_SENTINELS)
 		
 		if emit_sentinels is not None:
@@ -53,7 +54,6 @@ class UnveillanceObject(object):
 			self.save()
 		
 		elif _id is not None: self.getObject(_id)
-		print "HIIIIIIII %s" % _id
 	
 	def addAsset(self, file_name, asset_path, as_literal=True, **metadata):		
 		asset = { 'file_name' : file_name }
@@ -83,6 +83,8 @@ class UnveillanceObject(object):
 	
 	def getAsset(self, file_name, return_only=None):
 		if not hasattr(self, "assets"): return None
+		
+		from conf import ANNEX_DIR
 		
 		assets = [a for a in self.assets if a['file_name'] == file_name]
 		if len(assets) == 1:
