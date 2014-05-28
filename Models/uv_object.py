@@ -93,9 +93,9 @@ class UnveillanceObject(object):
 				if return_only == "path":
 					return asset_path
 				elif return_only == "entry":
-					return asset[0]
+					return assets[0]
 			else:
-				return (asset[0], asset_path)
+				return (assets[0], asset_path)
 		
 		return None
 	
