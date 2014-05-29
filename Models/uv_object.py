@@ -82,8 +82,11 @@ class UnveillanceObject(object):
 		return None
 	
 	def getAsset(self, file_name, return_only=None):
-		if not hasattr(self, "assets"): return None
+		if not hasattr(self, "assets"):
+			if DEBUG: print "THERE ARE NO ASSETS FOR THIS OBJECT"
+			return None
 		
+		if DEBUG: print "GETTING ASSET %s/%s" % (self.base_path, file_name)
 		from conf import ANNEX_DIR
 		
 		assets = [a for a in self.assets if a['file_name'] == file_name]
