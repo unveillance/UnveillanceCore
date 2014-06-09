@@ -29,6 +29,13 @@ MIME_TYPE_MAP = {
 	'application/json' : "json"
 }
 
+MIME_TYPE_TASKS = {
+	'text/plain' : [
+		'Text.evaluate_text.evaluateText',
+		'Text.preprocess_nlp.preprocessNLP'
+	]
+}
+
 METADATA_ASPECTS = {}
 
 UNCAUGHT_UNICODES = [SubDescriptor(u'\u2014', "--"),
