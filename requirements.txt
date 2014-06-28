@@ -3,3 +3,4 @@ requests
 tornado
 pyyaml
 crontab
+pycrypto
