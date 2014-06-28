@@ -2,5 +2,5 @@ fabric
 requests
 tornado
 pyyaml
-crontab
+python-crontab
 pycrypto
