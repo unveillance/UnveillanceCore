@@ -1,4 +1,4 @@
-import os, sys, signal, json, re, string, random, base64
+import os, sys, signal, json, re, string, random, base64, urllib
 from time import time
 from subprocess import Popen, PIPE
 from hashlib import md5
@@ -129,6 +129,9 @@ def passesParameterFilter(param_str):
 
 def parseRequestEntity(entity):
 	# if query string is already json, return that
+	print "\n\nENTITY:\n%s\n%s" % (entity, urllib.unquote(entity))
+	print type(entity)
+	
 	try:
 		if passesParameterFilter(entity):
 			return json.loads(entity)
@@ -137,7 +140,7 @@ def parseRequestEntity(entity):
 	
 	# otherwise...
 	params = dict()
-	for kvp in [w for w in entity.split("&") if w != ""]:
+	for kvp in [w for w in urllib.unquote(entity).split("&") if w != ""]:
 		kvp = kvp.split("=")
 		k = kvp[0]
 		v = kvp[1]
