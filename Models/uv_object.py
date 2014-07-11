@@ -116,9 +116,15 @@ class UnveillanceObject(object):
 			if e.s_replace is None:
 				del emit_[e.attr]
 			else:
-				rep = getattr(self, e.attr)				
+				rep = getattr(self, e.attr)			
 				if type(rep) is list:
-					emit_[e.attr] = [getattr(r, e.s_replace) for r in rep]
+					emit_[e.attr] = []
+					for r in rep:
+						try:
+							emit_[e.attr].append(getattr(r, e.s_replace))
+						except Exception as ex:
+							emit_[e.attr].append(r)
+
 				else:
 					emit_[e.attr] = getattr(rep, e.s_replace)
 		
