@@ -67,7 +67,7 @@ class UnveillanceObject(object):
 		if len(entry) == 1: entry[0].update(asset)
 		else: self.assets.append(asset)
 		
-		self.save()
+		self.saveFields('assets')
 		return asset_path
 	
 	def loadAsset(self, file_name):
