@@ -21,18 +21,23 @@ ASSET_TAGS = {
 
 MIME_TYPES = {
 	'txt' : "text/plain",
-	'json' : "application/json"
+	'json' : "application/json",
+	'symlink' : "inode/symlink"
 }
 
 MIME_TYPE_MAP = {
 	'text/plain' : "txt",
-	'application/json' : "json"
+	'application/json' : "json",
+	'inode/symlink' : "symlink"
 }
 
 MIME_TYPE_TASKS = {
 	'text/plain' : [
 		'Text.evaluate_text.evaluateText',
 		'Text.preprocess_nlp.preprocessNLP'
+	],
+	'inode/symlink' : [
+		'Document.pull_from_annex.pullFromAnnex'
 	]
 }
 
