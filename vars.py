@@ -22,13 +22,15 @@ ASSET_TAGS = {
 MIME_TYPES = {
 	'txt' : "text/plain",
 	'json' : "application/json",
-	'symlink' : "inode/symlink"
+	'symlink' : "inode/symlink",
+	'txt_stub' : "unveillance/textstub"
 }
 
 MIME_TYPE_MAP = {
 	'text/plain' : "txt",
 	'application/json' : "json",
-	'inode/symlink' : "symlink"
+	'inode/symlink' : "symlink",
+	'unveillance/textstub' : "txt_stub"
 }
 
 MIME_TYPE_TASKS = {
