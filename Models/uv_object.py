@@ -86,7 +86,7 @@ class UnveillanceObject(object):
 			if DEBUG: print "THERE ARE NO ASSETS FOR THIS OBJECT"
 			return None
 		
-		if DEBUG: print "GETTING ASSET %s/%s" % (self.base_path, file_name)
+		if DEBUG: print "GETTING ASSET %s/%s!!!" % (self.base_path, file_name)
 		from conf import ANNEX_DIR
 		
 		assets = [a for a in self.assets if a['file_name'] == file_name]
