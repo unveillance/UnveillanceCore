@@ -31,6 +31,8 @@ def cleanLine(line):
 	return line
 
 def cleanAndSplitLine(line):
+	line = cleanLine(line)
+	
 	for c in UNCAUGHT_PUNCTUATION:
 		line = re.sub(c.regex, " " if c.sub is None else c.sub, line)
 	

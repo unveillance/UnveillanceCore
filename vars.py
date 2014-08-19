@@ -55,9 +55,11 @@ UNCAUGHT_PUNCTUATION = [SubDescriptor(r'\.', None),
 	SubDescriptor(r'\?', None),
 	SubDescriptor(r'\&', "and"),
 	SubDescriptor(r':', None),
+	SubDescriptor(r';', None),
 	SubDescriptor(r'\-', None),
 	SubDescriptor(r'\n', None),
 	SubDescriptor(r'\]|\[', None),
+	SubDescriptor(r'\(|\)', None),
 	SubDescriptor(r'<|>', None),
 	SubDescriptor(r'\!', None)]
 
