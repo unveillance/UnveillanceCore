@@ -47,7 +47,13 @@ METADATA_ASPECTS = {}
 
 UNCAUGHT_UNICODES = [SubDescriptor(u'\u2014', "--"),
 	SubDescriptor(u'\u0152', "oe"),
-	SubDescriptor(u'\u2122', "'")]
+	SubDescriptor(u'\u2122', "'"),
+	SubDescriptor(u'\ufb01', "\""),
+	SubDescriptor(u'\ufb02', "\""),
+	SubDescriptor(u'\u2013', "--"),
+	SubDescriptor(u'\u0160', "S"),
+	SubDescriptor(u'\u201a', ",")
+	]
 
 UNCAUGHT_PUNCTUATION = [SubDescriptor(r'\.', None),
 	SubDescriptor(r',', None),
