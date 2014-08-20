@@ -143,6 +143,5 @@ class UnveillanceObject(object):
 			self.errors.append(error)
 	
 	def inflate(self, attrs):
-		print attrs
 		for k,v in attrs.iteritems():
 			setattr(self, k, v)
