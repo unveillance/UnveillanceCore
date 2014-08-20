@@ -165,6 +165,17 @@ def hashEntireFile(path_to_file):
 	except: pass
 	return None
 
+def hashEntireStream(stream):
+	try:
+		m = md5()
+		for chunk in iter(lambda: stream.read1(4096), b''):
+			m.update(chunk)
+		return m.hexdigest()
+	
+	except: pass
+	return None
+
+
 def startDaemon(log_file, pid_file):
 	print "DAEMONIZING PROCESS>>>"
 	try:
