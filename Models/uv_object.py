@@ -51,7 +51,7 @@ class UnveillanceObject(object):
 			inflate['date_added'] = time() * 1000
 			
 			self.inflate(inflate)
-			self.save()
+			self.save(create=True)
 		
 		elif _id is not None: self.getObject(_id)
 	
@@ -72,7 +72,7 @@ class UnveillanceObject(object):
 	
 	def loadAsset(self, file_name):
 		asset_path = self.getAsset(file_name, return_only="path")
-		print "LOADING ASSET FROM PATH: %s" % asset_path
+		if DEBUG: print "LOADING ASSET FROM PATH: %s" % asset_path
 		
 		if asset_path is not None:
 			try:
