@@ -175,7 +175,6 @@ def hashEntireStream(stream):
 	except: pass
 	return None
 
-
 def startDaemon(log_file, pid_file):
 	print "DAEMONIZING PROCESS>>>"
 	try:
