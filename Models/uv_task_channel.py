@@ -34,13 +34,13 @@ class UnveillanceTaskChannel(Thread):
 
 	def run(self):
 		url = "/%s" % '/'.join([self.task_id, self._session, self._id, "xhr_streaming"])
-		print "TRYING URL %s" % url
+		if DEBUG:
+			print "TRYING URL %s" % url
 
 		con = httplib.HTTPConnection(self.host, self.port)
 		con.request('POST', url)
 
 		r = con.getresponse()
-
 		self.sock = socket.fromfd(r.fileno(), socket.AF_INET, socket.SOCK_STREAM)
 		
 		data = 1
