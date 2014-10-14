@@ -29,8 +29,14 @@ class UnveillanceTaskChannel(Thread):
 				print "GETTING INFO FIRST:"
 				print r.status, r.reason, r.read()
 
+			self.start()
+
 		finally:
 			if not con: con.close()
+
+	def die(self):
+		self.sock.shutdown(socket.SHUT_RDWR)
+		self.sock.close()	
 
 	def run(self):
 		url = "/%s" % '/'.join([self.task_id, self._session, self._id, "xhr_streaming"])
