@@ -1,11 +1,11 @@
 import httplib, socket, random, string
 
-from threading import Thread
+import threading
 from time import sleep
 
 from conf import DEBUG
 
-class UnveillanceTaskChannel(Thread):
+class UnveillanceTaskChannel(threading.Thread):
 	def __init__(self, task_id, host, port):
 		self.host = host
 		self.port = port
@@ -14,7 +14,7 @@ class UnveillanceTaskChannel(Thread):
 		self._session = str(random.randint(0, 1000))
 		self._id = ''.join(random.choice(string.ascii_lowercase + string.digits) for c in range(8))
 
-		Thread.__init__(self)
+		super(UnveillanceTaskChannel, self).__init__()
 		self.get_socket_info()
 
 	def get_socket_info(self):

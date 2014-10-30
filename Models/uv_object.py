@@ -111,7 +111,14 @@ class UnveillanceObject(object):
 		return assets
 	
 	def emit(self, remove=None):
-		emit_ = deepcopy(self.__dict__)
+		try:
+			emit_ = deepcopy(self.__dict__)
+		except Exception as e:
+			emit_ = {}
+			
+			for e in self.__dict__.keys():
+				emit_[e] = getattr(self, e)
+
 		for e in [e for e in self.emit_sentinels if hasattr(self, e.attr)]:				
 			if e.s_replace is None:
 				del emit_[e.attr]
