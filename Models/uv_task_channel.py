@@ -53,18 +53,19 @@ class UnveillanceTaskChannel(threading.Thread):
 		while data:
 			data = self.sock.recv(1)
 			if data == 'o':
-				if DEBUG: print "CONNECTION!"
+				#if DEBUG: print "CONNECTION!"
 				pass
 
 			if data == 'c':
-				if DEBUG: print "DISCONNECTION"
+				#if DEBUG: print "DISCONNECTION"
+				pass
 
 			if data in ('m', 'a'):
 				msg = self.sock.recv(1000)
 
 				if DEBUG: 
 					print "MESSAGE!"
-					print msg
+					print "***\n\n %s\n\n ***" % msg
 
 		sleep(0)
 		if DEBUG: print "Channel to task %s closed." % self.task_id
