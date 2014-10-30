@@ -35,8 +35,7 @@ MIME_TYPE_MAP = {
 
 MIME_TYPE_TASKS = {
 	'text/plain' : [
-		'Text.evaluate_text.evaluateText',
-		'Text.preprocess_nlp.preprocessNLP'
+		'Text.evaluate_text.evaluateText'
 	],
 	'inode/symlink' : [
 		'Document.pull_from_annex.pullFromAnnex'
