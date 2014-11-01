@@ -6,10 +6,10 @@ from time import sleep
 from conf import DEBUG
 
 class UnveillanceTaskChannel(threading.Thread):
-	def __init__(self, task_id, host, port):
+	def __init__(self, chan, host, port):
 		self.host = host
 		self.port = port
-		self.task_id = task_id
+		self.chan = chan
 
 		self._session = str(random.randint(0, 1000))
 		self._id = ''.join(random.choice(string.ascii_lowercase + string.digits) for c in range(8))
@@ -22,7 +22,7 @@ class UnveillanceTaskChannel(threading.Thread):
 		
 		try:
 			con = httplib.HTTPConnection(self.host, self.port)
-			con.request('GET', '/%s/info' % self.task_id)
+			con.request('GET', '/%s/info' % self.chan)
 			r = con.getresponse()
 
 			if DEBUG:
@@ -39,7 +39,7 @@ class UnveillanceTaskChannel(threading.Thread):
 		self.sock.close()	
 
 	def run(self):
-		url = "/%s" % '/'.join([self.task_id, self._session, self._id, "xhr_streaming"])
+		url = "/%s" % '/'.join([self.chan, self._session, self._id, "xhr_streaming"])
 		if DEBUG:
 			print "TRYING URL %s" % url
 
@@ -63,9 +63,8 @@ class UnveillanceTaskChannel(threading.Thread):
 			if data in ('m', 'a'):
 				msg = self.sock.recv(1000)
 
-				if DEBUG: 
-					print "MESSAGE!"
-					print "***\n\n %s\n\n ***" % msg
+				if DEBUG:
+					print "***[BEGIN MSG]\n\n%s\n\n[END MSG]***" % msg
 
 		sleep(0)
-		if DEBUG: print "Channel to task %s closed." % self.task_id
+		if DEBUG: print "Channel to task %s closed." % self.chan

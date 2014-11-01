@@ -113,7 +113,7 @@ class UnveillanceObject(object):
 	def emit(self, remove=None):
 		try:
 			emit_ = deepcopy(self.__dict__)
-		except Exception as e:
+		except Exception as ex:
 			emit_ = {}
 			
 			for e in self.__dict__.keys():
