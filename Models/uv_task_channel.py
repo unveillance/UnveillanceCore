@@ -13,13 +13,18 @@ class UnveillanceTaskChannel(threading.Thread):
 
 		if use_ssl is None:
 			self.use_ssl = True if self.port == 443 else False
+		elif type(use_ssl) is bool:
+			self.use_ssl = use_ssl
+		else:
+			self.use_ssl = False
+
 
 		self._session = str(random.randint(0, 1000))
 		self._id = ''.join(random.choice(string.ascii_lowercase + string.digits) for c in range(8))
 
 		super(UnveillanceTaskChannel, self).__init__()
 
-		print self.host, self.port, self.chan
+		print self.host, self.port, self.chan, self.use_ssl
 
 		if auto_start:
 			self.get_socket_info()
@@ -48,6 +53,9 @@ class UnveillanceTaskChannel(threading.Thread):
 				con.close()
 
 	def route_annex_channel_message(self, message):
+		if DEBUG:
+			print "...routing message if superclass..."
+
 		pass
 
 	def die(self):
@@ -85,6 +93,8 @@ class UnveillanceTaskChannel(threading.Thread):
 
 				if DEBUG:
 					print "***[BEGIN MSG]\n\n%s\n\n[END MSG]***" % msg
+
+				self.route_annex_channel_message(msg)
 
 		sleep(0)
 		if DEBUG: print "Channel to task %s closed." % self.chan
