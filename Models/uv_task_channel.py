@@ -6,23 +6,25 @@ from time import sleep
 from conf import DEBUG
 
 class UnveillanceTaskChannel(threading.Thread):
-	def __init__(self, chan, host, port):
-		self.host = host
-		self.port = port
-		self.chan = chan
+	def __init__(self, task_id, host, port, auto_start=True, _session=None, _id=None):
+		self.annex_channel_host = host
+		self.annex_channel_port = port
+		self.task_id = task_id
 
-		self._session = str(random.randint(0, 1000))
-		self._id = ''.join(random.choice(string.ascii_lowercase + string.digits) for c in range(8))
+		self._session = str(random.randint(0, 1000)) if _session is None else _session
+		self._id = ''.join(random.choice(string.ascii_lowercase + string.digits) for c in range(8)) if _id is None else _id
 
 		super(UnveillanceTaskChannel, self).__init__()
-		self.get_socket_info()
+
+		if auto_start:
+			self.get_socket_info()
 
 	def get_socket_info(self):
 		con = 0
 		
 		try:
-			con = httplib.HTTPConnection(self.host, self.port)
-			con.request('GET', '/%s/info' % self.chan)
+			con = httplib.HTTPConnection(self.annex_channel_host, self.annex_channel_port)
+			con.request('GET', '/%s/info' % self.task_id)
 			r = con.getresponse()
 
 			if DEBUG:
@@ -39,11 +41,11 @@ class UnveillanceTaskChannel(threading.Thread):
 		self.sock.close()	
 
 	def run(self):
-		url = "/%s" % '/'.join([self.chan, self._session, self._id, "xhr_streaming"])
+		url = "/%s" % '/'.join([self.task_id, self._session, self._id, "xhr_streaming"])
 		if DEBUG:
 			print "TRYING URL %s" % url
 
-		con = httplib.HTTPConnection(self.host, self.port)
+		con = httplib.HTTPConnection(self.annex_channel_host, self.annex_channel_port)
 		con.request('POST', url)
 
 		r = con.getresponse()
@@ -63,8 +65,9 @@ class UnveillanceTaskChannel(threading.Thread):
 			if data in ('m', 'a'):
 				msg = self.sock.recv(1000)
 
-				if DEBUG:
-					print "***[BEGIN MSG]\n\n%s\n\n[END MSG]***" % msg
+				if DEBUG: 
+					print "MESSAGE!"
+					print "***\n\n %s\n\n ***" % msg
 
 		sleep(0)
-		if DEBUG: print "Channel to task %s closed." % self.chan
+		if DEBUG: print "Channel to task %s closed." % self.task_id
