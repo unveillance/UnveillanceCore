@@ -6,22 +6,33 @@ from time import sleep
 from conf import DEBUG
 
 class UnveillanceTaskChannel(threading.Thread):
-	def __init__(self, chan, host, port):
+	def __init__(self, chan, host, port, use_ssl=None, auto_start=True):
 		self.host = host
 		self.port = port
 		self.chan = chan
+
+		if use_ssl is None:
+			self.use_ssl = True if self.port == 443 else False
 
 		self._session = str(random.randint(0, 1000))
 		self._id = ''.join(random.choice(string.ascii_lowercase + string.digits) for c in range(8))
 
 		super(UnveillanceTaskChannel, self).__init__()
-		self.get_socket_info()
+
+		print self.host, self.port, self.chan
+
+		if auto_start:
+			self.get_socket_info()
 
 	def get_socket_info(self):
 		con = 0
 		
 		try:
-			con = httplib.HTTPConnection(self.host, self.port)
+			if self.use_ssl:
+				con = httplib.HTTPSConnection(self.host, self.port)
+			else:
+				con = httplib.HTTPConnection(self.host, self.port)
+
 			con.request('GET', '/%s/info' % self.chan)
 			r = con.getresponse()
 
@@ -32,18 +43,27 @@ class UnveillanceTaskChannel(threading.Thread):
 			self.start()
 
 		finally:
-			if not con: con.close()
+			if not con:
+				print "NO CON!"
+				con.close()
+
+	def route_annex_channel_message(self, message):
+		pass
 
 	def die(self):
 		self.sock.shutdown(socket.SHUT_RDWR)
-		self.sock.close()	
+		self.sock.close()
 
 	def run(self):
 		url = "/%s" % '/'.join([self.chan, self._session, self._id, "xhr_streaming"])
 		if DEBUG:
 			print "TRYING URL %s" % url
 
-		con = httplib.HTTPConnection(self.host, self.port)
+		if self.use_ssl:
+			con = httplib.HTTPSConnection(self.host, self.port)
+		else:
+			con = httplib.HTTPConnection(self.host, self.port)
+		
 		con.request('POST', url)
 
 		r = con.getresponse()
