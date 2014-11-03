@@ -85,6 +85,8 @@ class UnveillanceObject(object):
 		if not hasattr(self, "assets"):
 			if DEBUG: print "THERE ARE NO ASSETS FOR THIS OBJECT"
 			return None
+
+		file_name = file_name.replace("%s/" % self.base_path, "")
 		
 		if DEBUG: print "GETTING ASSET %s/%s!!!" % (self.base_path, file_name)
 		from conf import ANNEX_DIR
@@ -113,7 +115,7 @@ class UnveillanceObject(object):
 	def emit(self, remove=None):
 		try:
 			emit_ = deepcopy(self.__dict__)
-		except Exception as e:
+		except Exception as ex:
 			emit_ = {}
 
 			for k in self.__dict__.keys():

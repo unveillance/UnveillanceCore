@@ -6,23 +6,39 @@ from time import sleep
 from conf import DEBUG
 
 class UnveillanceTaskChannel(threading.Thread):
-	def __init__(self, task_id, host, port):
+	def __init__(self, chan, host, port, use_ssl=None, auto_start=True):
 		self.host = host
 		self.port = port
-		self.task_id = task_id
+		self.chan = chan
+
+		if use_ssl is None:
+			self.use_ssl = True if self.port == 443 else False
+		elif type(use_ssl) is bool:
+			self.use_ssl = use_ssl
+		else:
+			self.use_ssl = False
+
 
 		self._session = str(random.randint(0, 1000))
 		self._id = ''.join(random.choice(string.ascii_lowercase + string.digits) for c in range(8))
 
 		super(UnveillanceTaskChannel, self).__init__()
-		self.get_socket_info()
+
+		print self.host, self.port, self.chan, self.use_ssl
+
+		if auto_start:
+			self.get_socket_info()
 
 	def get_socket_info(self):
 		con = 0
 		
 		try:
-			con = httplib.HTTPConnection(self.host, self.port)
-			con.request('GET', '/%s/info' % self.task_id)
+			if self.use_ssl:
+				con = httplib.HTTPSConnection(self.host, self.port)
+			else:
+				con = httplib.HTTPConnection(self.host, self.port)
+
+			con.request('GET', '/%s/info' % self.chan)
 			r = con.getresponse()
 
 			if DEBUG:
@@ -32,18 +48,30 @@ class UnveillanceTaskChannel(threading.Thread):
 			self.start()
 
 		finally:
-			if not con: con.close()
+			if not con:
+				print "NO CON!"
+				con.close()
+
+	def route_annex_channel_message(self, message):
+		if DEBUG:
+			print "...routing message if superclass..."
+
+		pass
 
 	def die(self):
 		self.sock.shutdown(socket.SHUT_RDWR)
-		self.sock.close()	
+		self.sock.close()
 
 	def run(self):
-		url = "/%s" % '/'.join([self.task_id, self._session, self._id, "xhr_streaming"])
+		url = "/%s" % '/'.join([self.chan, self._session, self._id, "xhr_streaming"])
 		if DEBUG:
 			print "TRYING URL %s" % url
 
-		con = httplib.HTTPConnection(self.host, self.port)
+		if self.use_ssl:
+			con = httplib.HTTPSConnection(self.host, self.port)
+		else:
+			con = httplib.HTTPConnection(self.host, self.port)
+		
 		con.request('POST', url)
 
 		r = con.getresponse()
@@ -63,9 +91,10 @@ class UnveillanceTaskChannel(threading.Thread):
 			if data in ('m', 'a'):
 				msg = self.sock.recv(1000)
 
-				if DEBUG: 
-					#print "MESSAGE!"
-					print "***\n\n %s\n\n ***" % msg
+				if DEBUG:
+					print "***[BEGIN MSG]\n\n%s\n\n[END MSG]***" % msg
+
+				self.route_annex_channel_message(msg)
 
 		sleep(0)
-		if DEBUG: print "Channel to task %s closed." % self.task_id
+		if DEBUG: print "Channel to task %s closed." % self.chan

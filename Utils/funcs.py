@@ -166,13 +166,18 @@ def hashEntireFile(path_to_file):
 	return None
 
 def hashEntireStream(stream):
+	stream.seek(0, os.SEEK_SET)
 	try:
 		m = md5()
-		for chunk in iter(lambda: stream.read1(4096), b''):
+		for chunk in iter(lambda: stream.read(4096), b''):
 			m.update(chunk)
 		return m.hexdigest()
 	
-	except: pass
+	except Exception as e:
+		print "ERROR HASHING STREAM:"
+		print e
+		pass
+		
 	return None
 
 def startDaemon(log_file, pid_file):
