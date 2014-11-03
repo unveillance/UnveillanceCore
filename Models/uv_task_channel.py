@@ -64,7 +64,7 @@ class UnveillanceTaskChannel(threading.Thread):
 				msg = self.sock.recv(1000)
 
 				if DEBUG: 
-					print "MESSAGE!"
+					#print "MESSAGE!"
 					print "***\n\n %s\n\n ***" % msg
 
 		sleep(0)

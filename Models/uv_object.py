@@ -115,9 +115,9 @@ class UnveillanceObject(object):
 			emit_ = deepcopy(self.__dict__)
 		except Exception as e:
 			emit_ = {}
-			
-			for e in self.__dict__.keys():
-				emit_[e] = getattr(self, e)
+
+			for k in self.__dict__.keys():
+				emit_[k] = getattr(self, k)
 
 		for e in [e for e in self.emit_sentinels if hasattr(self, e.attr)]:				
 			if e.s_replace is None:
