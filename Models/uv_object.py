@@ -109,7 +109,9 @@ class UnveillanceObject(object):
 		
 		assets = [a for a in self.assets if "tags" in a and tag in a['tags']]
 		
-		if len(assets) == 0: return None
+		if len(assets) == 0:
+			return None
+		
 		return assets
 	
 	def emit(self, remove=None):

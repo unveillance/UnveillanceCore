@@ -16,7 +16,8 @@ ASSET_TAGS = {
 	'TXT_JSON' : "text_json",
 	'KW' : "keywords",
 	'BOW' : "bag_of_words",
-	'F_MD' : "metadata_fingerprint"
+	'F_MD' : "metadata_fingerprint",
+	'C_RES' : "cluster_result"
 }
 
 MIME_TYPES = {
