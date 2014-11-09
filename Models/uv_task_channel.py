@@ -53,9 +53,6 @@ class UnveillanceTaskChannel(threading.Thread):
 				con.close()
 
 	def route_annex_channel_message(self, message):
-		if DEBUG:
-			print "...routing message if superclass..."
-
 		pass
 
 	def die(self):
@@ -90,10 +87,6 @@ class UnveillanceTaskChannel(threading.Thread):
 
 			if data in ('m', 'a'):
 				msg = self.sock.recv(1000)
-
-				if DEBUG:
-					print "***[BEGIN MSG]\n\n%s\n\n[END MSG]***" % msg
-
 				self.route_annex_channel_message(msg)
 
 		sleep(0)
