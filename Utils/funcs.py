@@ -1,13 +1,13 @@
 import os, sys, signal, json, re, string, random, base64, urllib
 from time import time
 from subprocess import Popen, PIPE
-from hashlib import md5
+from hashlib import md5, sha1
 
 from Crypto.Cipher import AES
 from Crypto import Random
 
 from vars import UNCAUGHT_UNICODES, UNCAUGHT_PUNCTUATION, STOPWORDS, SPLITTERS
-from conf import DEBUG
+from conf import DEBUG, SHA1_INDEX
 
 def b64decode(content):
 	try:
@@ -156,7 +156,11 @@ def parseRequestEntity(entity):
 
 def hashEntireFile(path_to_file):
 	try:
-		m = md5()
+		if not SHA1_INDEX:
+			m = md5()
+		else:
+			m = sha1()
+
 		with open(path_to_file, 'rb') as f:
 			for chunk in iter(lambda: f.read(4096), b''):
 				m.update(chunk)
@@ -168,7 +172,11 @@ def hashEntireFile(path_to_file):
 def hashEntireStream(stream):
 	stream.seek(0, os.SEEK_SET)
 	try:
-		m = md5()
+		if not SHA1_INDEX:
+			m = md5()
+		else:
+			m = sha1()
+
 		for chunk in iter(lambda: stream.read(4096), b''):
 			m.update(chunk)
 		return m.hexdigest()
@@ -287,7 +295,11 @@ def generateMD5Hash(content=None, salt=None):
 	if content is None:
 		content = generateNonce()
 	
-	m = md5()
+	if not SHA1_INDEX:
+		m = md5()
+	else:
+		m = sha1()
+
 	m.update(str(content))
 	if salt is not None: m.update(str(salt))
 	return m.hexdigest()
