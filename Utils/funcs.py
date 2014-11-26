@@ -109,6 +109,7 @@ def unUnicode(data):
 	return asTrueValue(unicode.join(u'\n', map(unicode, data)))
 
 def passesParameterFilter(param_str):
+	# WHY EVEN TRY??? TODO: there is a package for you here.
 	# looking for pipes
 	match = re.search(r'\s*\|\s*.+', param_str)
 	if match:
@@ -149,6 +150,8 @@ def parseRequestEntity(entity):
 		
 		if not passesParameterFilter(k) or not passesParameterFilter(v):
 			return None
+
+		# TODO: you have some dicts in here, too!
 		
 		params[k] = asTrueValue(v)
 	
