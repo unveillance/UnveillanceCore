@@ -9,7 +9,9 @@ from conf import DEBUG
 from vars import EmitSentinel, ALLOWED_DATA_ROOTS
 
 EMIT_SENTINELS = [
-		EmitSentinel("emit_sentinels", "EmitSentinel", None)]
+		EmitSentinel("emit_sentinels", "EmitSentinel", None),
+		EmitSentinel("invalid", "bool", None),
+		EmitSentinel("errors", "list", None)]
 
 class UnveillanceObject(object):
 	def __init__(self, emit_sentinels=None, _id=None, inflate=None):
