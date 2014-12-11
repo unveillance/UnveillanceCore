@@ -42,7 +42,8 @@ class UnveillanceObject(object):
 				del inflate['relative_root']
 				
 			if relative_root not in ALLOWED_DATA_ROOTS:
-				if DEBUG: print "OH HELLLLL NO!"
+				if DEBUG:
+					print "OH HELLLLL NO!"
 				return
 			
 			base_path = os.path.join(relative_root, inflate['_id'])
@@ -55,31 +56,39 @@ class UnveillanceObject(object):
 			self.inflate(inflate)
 			self.save(create=True)
 		
-		elif _id is not None: self.getObject(_id)
+		elif _id is not None:
+			self.getObject(_id)
 	
 	def addAsset(self, file_name, asset_path, as_literal=True, **metadata):		
 		asset = { 'file_name' : file_name }
 		for k,v in metadata.iteritems():
 			asset[k] = v
-			if DEBUG: print "metadata added: %s = %s" % (k, v)
+			if DEBUG:
+				print "metadata added: %s = %s" % (k, v)
 			
-		if not hasattr(self, "assets"): self.assets = []
+		if not hasattr(self, "assets"):
+			self.assets = []
 		
 		entry = [e for e in self.assets if e['file_name'] == asset['file_name']]
-		if len(entry) == 1: entry[0].update(asset)
-		else: self.assets.append(asset)
+		if len(entry) == 1:
+			entry[0].update(asset)
+		else:
+			self.assets.append(asset)
 		
 		self.saveFields('assets')
 		return asset_path
 	
 	def loadAsset(self, file_name):
 		asset_path = self.getAsset(file_name, return_only="path")
-		if DEBUG: print "LOADING ASSET FROM PATH: %s" % asset_path
+		if DEBUG:
+			print "LOADING ASSET FROM PATH: %s" % asset_path
 		
 		if asset_path is not None:
 			try:
-				with open(asset_path, 'rb') as f: return f.read()
-			except Exception as e: print e
+				with open(asset_path, 'rb') as f:
+					return f.read()
+			except Exception as e:
+				print e
 		
 		return None
 	
