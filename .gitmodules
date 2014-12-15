@@ -1,3 +1,0 @@
-[submodule "lib/sockjs-tornado"]
-	path = lib/sockjs-tornado
-	url = git@github.com:mrjoes/sockjs-tornado.git
