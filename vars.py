@@ -39,7 +39,7 @@ MIME_TYPE_TASKS = {
 		'Text.evaluate_text.evaluateText'
 	],
 	'inode/symlink' : [
-		'Document.pull_from_annex.pullFromAnnex'
+		'Documents.pull_from_annex.pullFromAnnex'
 	]
 }
 
