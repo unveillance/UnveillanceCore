@@ -148,7 +148,10 @@ class UnveillanceObject(object):
 							emit_[e.attr].append(r)
 
 				else:
-					emit_[e.attr] = getattr(rep, e.s_replace)
+					try:
+						emit_[e.attr] = getattr(rep, e.s_replace)
+					except Exception as ex:
+						emit_[e.attr] = rep
 		
 		if remove is not None:
 			if type(remove) is not list:

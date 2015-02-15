@@ -142,6 +142,7 @@ def parseRequestEntity(entity):
 	except ValueError as e: pass
 	
 	# otherwise...
+	# TODO: does this need to be so bespoke? can we use urlparse?
 	params = dict()
 	for kvp in [w for w in urllib.unquote(entity).split("&") if w != ""]:
 		kvp = kvp.split("=")
