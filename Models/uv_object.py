@@ -54,7 +54,7 @@ class UnveillanceObject(object):
 			inflate['date_added'] = time() * 1000
 			
 			self.inflate(inflate)
-			self.save(create=True)
+			self.save()
 		
 		elif _id is not None:
 			self.getObject(_id)
