@@ -9,6 +9,12 @@ from Crypto import Random
 from vars import UNCAUGHT_UNICODES, UNCAUGHT_PUNCTUATION, STOPWORDS, SPLITTERS
 from conf import DEBUG, SHA1_INDEX
 
+def hours_to_seconds(hours):
+	return (hours * 60 * 60)
+
+def days_to_seconds(days):
+	return hours_to_seconds(24)
+
 def b64decode(content):
 	try:
 		return base64.b64decode(content)
