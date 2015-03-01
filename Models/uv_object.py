@@ -58,6 +58,13 @@ class UnveillanceObject(object):
 		
 		elif _id is not None:
 			self.getObject(_id)
+
+	def reset(self):
+		for r in ['assets', 'completed_tasks']:
+			if hasattr(self, r):
+				delattr(self, r)
+
+		self.save()
 	
 	def addAsset(self, file_name, asset_path, as_literal=True, **metadata):		
 		asset = { 'file_name' : file_name }
