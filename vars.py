@@ -53,7 +53,9 @@ UNCAUGHT_UNICODES = [SubDescriptor(u'\u2014', "--"),
 	SubDescriptor(u'\u2013', "--"),
 	SubDescriptor(u'\u0160', "S"),
 	SubDescriptor(u'\u201a', ","),
-	SubDescriptor(u'\u021b', "t")
+	SubDescriptor(u'\u021b', "t"),
+	SubDescriptor(u'\u2018', "'"),
+	SubDescriptor(u'\u2019', "'")
 	]
 
 UNCAUGHT_PUNCTUATION = [SubDescriptor(r'\.', None),

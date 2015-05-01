@@ -31,7 +31,7 @@ def b64decode(content):
 	return None
 
 def cleanLine(line):
-	line = line.strip()
+	line = line.strip().encode('utf8')
 	for u in UNCAUGHT_UNICODES:
 		line = re.sub(u.regex, " " if u.sub is None else u.sub, line)
 	return line
