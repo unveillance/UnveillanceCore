@@ -5,7 +5,7 @@ from collections import namedtuple
 from copy import deepcopy
 from time import time
 
-from conf import DEBUG
+from conf import DEBUG, ANNEX_DIR
 from vars import EmitSentinel, ALLOWED_DATA_ROOTS
 
 EMIT_SENTINELS = [
@@ -15,8 +15,6 @@ EMIT_SENTINELS = [
 
 class UnveillanceObject(object):
 	def __init__(self, emit_sentinels=None, _id=None, inflate=None):
-		from conf import ANNEX_DIR
-		
 		self.emit_sentinels = deepcopy(EMIT_SENTINELS)
 		
 		if emit_sentinels is not None:
@@ -58,6 +56,9 @@ class UnveillanceObject(object):
 		
 		elif _id is not None:
 			self.getObject(_id)
+
+	def get_full_path(self):
+		return os.path.join(ANNEX_DIR, self.file_name)
 
 	def reset(self):
 		for r in ['assets', 'completed_tasks']:
