@@ -1,7 +1,7 @@
 import os, sys, signal, json, re, string, random, base64, urllib
 from time import time
 from subprocess import Popen, PIPE
-from hashlib import md5, sha1
+from hashlib import md5, sha1, sha256
 
 from Crypto.Cipher import AES
 from Crypto import Random
@@ -164,12 +164,19 @@ def parseRequestEntity(entity):
 	
 	return params
 
-def hashEntireFile(path_to_file):
+def hashEntireFile(path_to_file, hfunc=None):
 	try:
-		if not SHA1_INDEX:
+		if hfunc is None:
+			if not SHA1_INDEX:
+				m = md5()
+			else:
+				m = sha1()
+		elif hfunc == "md5":
 			m = md5()
-		else:
+		elif hfunc == "sha1":
 			m = sha1()
+		elif hfunc == "sha256":
+			m = sha256()
 
 		with open(path_to_file, 'rb') as f:
 			for chunk in iter(lambda: f.read(4096), b''):
@@ -179,13 +186,20 @@ def hashEntireFile(path_to_file):
 	except: pass
 	return None
 
-def hashEntireStream(stream):
+def hashEntireStream(stream, hfunc=None):
 	stream.seek(0, os.SEEK_SET)
 	try:
-		if not SHA1_INDEX:
+		if hfunc is None:
+			if not SHA1_INDEX:
+				m = md5()
+			else:
+				m = sha1()
+		elif hfunc == "md5":
 			m = md5()
-		else:
+		elif hfunc == "sha1":
 			m = sha1()
+		elif hfunc == "sha256":
+			m = sha256()
 
 		for chunk in iter(lambda: stream.read(4096), b''):
 			m.update(chunk)
