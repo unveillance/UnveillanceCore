@@ -31,9 +31,15 @@ def b64decode(content):
 	return None
 
 def cleanLine(line):
-	line = line.strip().encode('utf8')
+	line = line.strip()
+	try:
+		line = line.decode('utf8')
+	except Exception as e:
+		print "clean line error", e
+
 	for u in UNCAUGHT_UNICODES:
 		line = re.sub(u.regex, " " if u.sub is None else u.sub, line)
+	
 	return line
 
 def cleanAndSplitLine(line):
