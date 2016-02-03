@@ -5,7 +5,7 @@ EmitSentinel = namedtuple("EmitSentinel", "attr type s_replace")
 AnnexDescriptor = namedtuple("AnnexDescriptor", "farm p22 p8888")
 SubDescriptor = namedtuple('SubDescriptor', 'regex sub')
 
-ALLOWED_DATA_ROOTS = [".data", ".synctasks/local"]
+ALLOWED_DATA_ROOTS = [".data"]
 UV_DOC_TYPE = {
 	'TASK' : "UV_TASK",
 	'DOC' : "UV_DOCUMENT",
@@ -22,26 +22,37 @@ ASSET_TAGS = {
 
 MIME_TYPES = {
 	'txt' : "text/plain",
+	'zip' : "application/zip",
+	'image' : "image/jpeg",
+	'wildcard' : "application/octet-stream",
+	'pgp' : "application/pgp",
+	'gzip' : "application/x-gzip",
 	'json' : "application/json",
-	'symlink' : "inode/symlink",
 	'txt_stub' : "unveillance/textstub"
 }
 
 MIME_TYPE_MAP = {
 	'text/plain' : "txt",
+	'application/zip' : "zip",
+	'image/jpeg' : "jpg",
+	'application/octet-stream' : "wildcard",
+	'application/pgp' : "pgp",
+	'application/x-gzip' : "gzip",
 	'application/json' : "json",
-	'inode/symlink' : "symlink",
 	'unveillance/textstub' : "txt_stub"
 }
 
 MIME_TYPE_TASKS = {
 	'text/plain' : [
 		'Text.evaluate_text.evaluateText'
-	],
-	'inode/symlink' : [
-		'Documents.pull_from_annex.pullFromAnnex'
 	]
 }
+
+TASK_REQUIREMENTS = {
+	'Github.gist.run_gist' : ['gist_id']
+}
+
+AVAILABLE_CLUSTERS = {}
 
 METADATA_ASPECTS = {}
 
